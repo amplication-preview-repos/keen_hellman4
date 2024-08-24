@@ -1,0 +1,31 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Photo {
+  aperture     String?
+  createdAt    DateTime @default(now())
+  description  String?
+  file         Json?
+  gallery      Gallery? @relation(fields: [galleryId], references: [id])
+  galleryId    String?
+  id           String   @id @default(cuid())
+  iso          Int?
+  shutterSpeed String?
+  title        String?
+  updatedAt    DateTime @updatedAt
+}
+
+model Gallery {
+  createdAt   DateTime @default(now())
+  description String?
+  id          String   @id @default(cuid())
+  name        String?
+  photos      Photo[]
+  updatedAt   DateTime @updatedAt
+}
